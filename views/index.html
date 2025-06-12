@@ -1,60 +1,35 @@
-{{ block "index" . }}
+{{ block "page" . }}
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <link rel="stylesheet" href="/static/index.css" />
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
-
-    <title>Thoughs on programming and life</title>
-    <!-- <link rel="canonical" href="https://higherorderfunctioningdev"> -->
-    <meta name="higherorderfunctioning" content="look-for-the-bear-necessities">
-    <!-- Primary Meta Tags -->
-    <meta name="title" content="Thoughs on programming and life">
-    <meta name="description" content="thoughts on programming and life">
-    <!-- Open Graph / Facebook -->
-    <meta property="og:site_name" content="Thoughs on programming and life">
-    <meta property="og:title" content="Thoughs on programming and life">
-    <meta property="og:type" content="website">
-    <meta property="og:description" content="thoughts on programming and life">
-    <meta property="og:image" content="https://bear-images.sfo2.cdn.digitaloceanspaces.com/herman-1683556668-0.png">
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary">
-    <meta property="twitter:title" content="Thoughs on programming and life">
-    <meta property="twitter:description" content="thoughts on programming and life">
-    <meta property="twitter:image"
-        content="https://bear-images.sfo2.cdn.digitaloceanspaces.com/herman-1683556668-0.png">
-    <!-- Microdata -->
-    <script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "website",
-    "name": "Thoughs on programming and life",
-    "description": "thoughts on programming and life",
-    "about": {
-      "@type": "Thoughs on programming and life",
-      "description": "thoughts on programming and life"
-    }
-  }
-</script>
-    <link rel="alternate" type="application/atom+xml" href="/feed/">
-    <link rel="alternate" type="application/rss+xml" href="/feed/?type=rss">
-</head>
-
-<body class="home">
-    {{ template "header" . }}
+    <head>
+        <link rel="stylesheet" href="/static/index.css">
+        <title>Thoughs on programming and life</title>
+        <!-- Primary Meta Tags -->
+        <meta name="title" content="Thoughs on programming and life">
+        <meta name="description" content="thoughts on programming and life">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+        <meta name="higherorderfunctioning" content="look-for-the-bear-necessities">
+        <link rel="alternate" type="application/atom+xml" href="/feed/">
+        <link rel="alternate" type="application/rss+xml" href="/feed/?type=rss">
+        <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    </head>
+    <body class="home">
+        {{ template "header" . }}
     {{ template "navigation" . }}
-    {{ template "main" . }}
 
-</body>
-
+    {{ if eq .Page "index" }}
+    {{ template "index" . }}
+    {{ else if eq .Page "blog" }}
+    {{ template "blog" . }}
+    {{ else if eq .Page "blog-entry" }}
+    {{ template "entry" .Entry }}
+    {{ end }}
+    </body>
 </html>
 {{ end }}
 
 {{ block "header" . }}
-
 <header>
     <a class="title" href="/">
         <h1>Thoughs on programming and life</h1>
@@ -65,33 +40,20 @@
 {{ block "navigation" . }}
 <nav>
     <p>
-        <a href='/'>Home</a>
-        <a href='/about'>Home</a>
-        <a hx-get='/blog/'>Blog</a>
-        <a href='https://github.com/piotr-m-jurek' target="_blank">Github</a>
-        <a href='https://www.instagram.com/higherorderfunctioning/' target="_blank">Instagram</a>
+        <a
+            hx-get="/"
+            hx-target="main"
+            hx-swap="outerHTML"
+            hx-push-url="true"
+        >Home</a>
+        <a
+            hx-get="/blog"
+            hx-target="main"
+            hx-swap="outerHTML"
+            hx-push-url="true"
+        >Blog</a>
+        <a href="https://github.com/piotr-m-jurek" target="_blank">Github</a>
+        <a href="https://www.instagram.com/higherorderfunctioning/" target="_blank">Instagram</a>
     </p>
 </nav>
-{{ end }}
-
-{{ block "main" . }}
-<main>
-    <p>Programming front ends in casual stacks.
-        Striving for greatness with system programming languages, and esoteric explorations.
-        All that while striving for being better and slow-release dopamine shots.</p>
-    <h3 id="for-work">For work</h3>
-    <ul>
-        <li>leading front end team</li>
-        <li>expanding horizons on back end technologies</li>
-        <li>and everything connected to programming</li>
-    </ul>
-    <h3 id="not-for-work">Not for work</h3>
-    <ul>
-        <li>🏋️ lifting heavy, 🚴 riding fast, 📖 reading slow, 🧗 climbing tenaciously, 🏎️ driving speedy old
-            timer, 🌅 watching the world with unsatisfied enchantment</li>
-        <li>I like taking pictures with a retrotech camera.</li>
-        <li>I used to do a lot of music, therefore musically I'm never resting</li>
-    </ul>
-
-</main>
 {{ end }}

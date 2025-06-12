@@ -1,0 +1,30 @@
+{{ block "blog" . }}
+<main>
+    <p>Blog</p>
+    <div class="blog-entries">
+        {{ range .Entries }}
+        <div
+            class="blog-entry"
+            style="cursor: pointer;"
+            hx-get="/blog/{{ .ID }}"
+            hx-target="main"
+            hx-swap="outerHTML"
+            hx-push-url="true"
+        >
+            <h2>{{ .Title }}</h2>
+        </div>
+        {{ end }}
+    </div>
+</main>
+{{ end }}
+
+
+{{ block "entry" .Entry }}
+<main>
+    <div class="blog-entry">
+        <a href="/blog">Back</a>
+        <h2>{{ .Title }}</h2>
+        <p>{{ .Content }}</p>
+    </div>
+</main>
+{{ end }}
