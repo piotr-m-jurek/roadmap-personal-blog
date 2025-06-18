@@ -1,0 +1,58 @@
+{{ block "admin" . }}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="/static/index.css">
+        <title>Thoughs on programming and life</title>
+        <!-- Primary Meta Tags -->
+        <meta name="title" content="Thoughs on programming and life">
+        <meta name="description" content="thoughts on programming and life">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+        <meta name="higherorderfunctioning" content="look-for-the-bear-necessities">
+        <link rel="alternate" type="application/atom+xml" href="/feed/">
+        <link rel="alternate" type="application/rss+xml" href="/feed/?type=rss">
+        <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    </head>
+    <body class="home">
+        {{ if eq .Page "admin/index" }}
+    {{ template "main-content" . }}
+    {{ else if eq .Page "admin/new" }}
+    {{ template "new-post" . }}
+    {{ else if eq .Page "admin/edit" }}
+    {{ template "edit-post" .Entry }}
+    {{ end }}
+    </body>
+</html>
+{{ end }}
+
+{{block "main-content" .}}
+<main>
+    <h1>Admin</h1>
+    <p style="display: flex; gap: 10px; align-items: center; justify-content: space-between;">
+        <span>Posts</span>
+        <a
+            hx-get="/admin/new"
+            hx-target="main"
+            hx-swap="outerHTML"
+            hx-push-url="true"
+        >New</a>
+    </p>
+    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px;">
+        {{ range .Entries }}
+        <li style="display: flex; gap: 10px; justify-content: space-between; align-items: center;">
+            <span>{{ .Title }}</span>
+            <span>
+                <a
+                    hx-get="/admin/edit/{{ .ID }}"
+                    hx-target="main"
+                    hx-swap="outerHTML"
+                    hx-push-url="true"
+                >Edit</a>
+                <a hx-get="/admin/delete/{{ .ID }}" hx-target="main" hx-swap="outerHTML">Delete</a>
+            </span>
+        </li>
+        {{ end }}
+    </ul>
+</main>
+{{end}}

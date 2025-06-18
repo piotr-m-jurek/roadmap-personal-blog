@@ -1,0 +1,42 @@
+{{ block "new-post" . }}
+<main>
+    <h1>New Post</h1>
+    <form
+        hx-post="/admin/new"
+        hx-target="main"
+        hx-swap="outerHTML"
+        hx-push-url="true"
+        style="display: flex; flex-direction: column; gap: 10px;"
+    >
+        <input type="text" name="identifier" placeholder="Identifier">
+        <input type="text" name="title" placeholder="Title">
+        <textarea rows="20" name="content" placeholder="Content"></textarea>
+        <button type="submit">Create</button>
+    </form>
+</main>
+{{ end }}
+
+
+{{ block "edit-post" . }}
+<main>
+    <h1>Edit Post</h1>
+    <form
+        hx-post="/admin/edit/{{ .ID }}"
+        hx-target="main"
+        hx-swap="outerHTML"
+        style="display: flex; flex-direction: column; gap: 10px;"
+        hx-push-url="true"
+    >
+        <input type="text" name="identifier" value="{{ .ID }}">
+        <input type="text" name="id" value="{{ .ID }}">
+        <input
+            type="text"
+            name="title"
+            placeholder="Title"
+            value="{{ .Title }}"
+        >
+        <textarea rows="20" name="content" placeholder="Content">{{ .Content }}</textarea>
+        <button type="submit">Update</button>
+    </form>
+</main>
+{{ end }}

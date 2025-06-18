@@ -31,7 +31,13 @@
 
 {{ block "header" . }}
 <header>
-    <a class="title" href="/">
+    <a
+        class="title"
+        hx-get="/"
+        hx-target="main"
+        hx-swap="outerHTML"
+        hx-push-url="true"
+    >
         <h1>Thoughs on programming and life</h1>
     </a>
 </header>
