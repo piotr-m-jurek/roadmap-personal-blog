@@ -2,19 +2,32 @@ package main
 
 import (
 	"crypto/subtle"
+	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/piotr-m-jurek/roadmap-personal-blog/internal/handlers"
 	"github.com/piotr-m-jurek/roadmap-personal-blog/internal/store"
 	"github.com/piotr-m-jurek/roadmap-personal-blog/internal/view"
 
+	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
+var sessionStore = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
+
 const PORT = 8008
 
 func main() {
+
+	sessionStore.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   60 * 60 * 24 * 7,
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
+	}
 
 	e := echo.New()
 
@@ -23,7 +36,7 @@ func main() {
 	e.Static("/static", "static")
 
 	s := store.New()
-	h := handlers.New(s)
+	h := handlers.New(s, sessionStore)
 
 	e.GET("/", h.Index)
 	e.GET("/blog", h.BlogIndex)

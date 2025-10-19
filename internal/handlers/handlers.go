@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/gorilla/sessions"
 	"github.com/piotr-m-jurek/roadmap-personal-blog/internal/models"
 	"github.com/piotr-m-jurek/roadmap-personal-blog/internal/store"
 
@@ -10,11 +11,12 @@ import (
 )
 
 type Handlers struct {
-	store *store.Store
+	store   *store.Store
+	session *sessions.CookieStore
 }
 
-func New(s *store.Store) *Handlers {
-	return &Handlers{store: s}
+func New(s *store.Store, session *sessions.CookieStore) *Handlers {
+	return &Handlers{store: s, session: session}
 }
 
 func (h *Handlers) newData(page string, entry *models.Entry) (models.Data, error) {
